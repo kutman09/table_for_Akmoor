@@ -86,7 +86,7 @@ const FreeRoomFinder = ({ classes, onClose }) => {
                       <div className={styles.conflicts}>
                         {conflicts.map(c => (
                           <div key={c.id} className={styles.conflictItem}>
-                            <strong>{getTrackName(c.trackId)}</strong>: {c.topic} ({c.startTime} - {c.endTime})
+                            <strong>{getTrackName(c.trackId)}</strong>: {c.studentName ? `Student: ${c.studentName}` : (c.topic?.trim() || 'Class')} ({c.startTime} - {c.endTime})
                           </div>
                         ))}
                       </div>

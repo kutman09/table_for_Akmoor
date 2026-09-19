@@ -122,3 +122,27 @@
   color: #3b82f6;
   text-decoration: underline;
 }
+
+.courseStatus {
+  margin-top: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.warning {
+  border: 1px solid #f87171;
+  .courseStatus {
+    color: #dc2626;
+  }
+}
+
+.ended {
+  border: 1px solid #9ca3af;
+  .courseStatus {
+    color: #4b5563;
+  }
+}

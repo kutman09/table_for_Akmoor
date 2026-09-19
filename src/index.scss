@@ -44,12 +44,17 @@ body {
   }
 }
 
-.finder-btn {
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.finder-btn, .add-btn {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background-color: #1f2937;
   color: white;
   border: none;
   border-radius: 6px;
@@ -57,9 +62,19 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
-  
+}
+
+.finder-btn {
+  background-color: #1f2937;
   &:hover {
     background-color: #111827;
+  }
+}
+
+.add-btn {
+  background-color: #3b82f6;
+  &:hover {
+    background-color: #2563eb;
   }
 }
 
@@ -82,3 +97,12 @@ body {
     padding: 12px;
   }
 }
+
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+

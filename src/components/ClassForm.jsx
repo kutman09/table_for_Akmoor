@@ -6,6 +6,9 @@ import { generateTimeSlots } from '../utils/time';
 
 import { checkOverlap } from '../utils/time';
 import { TRACKS } from '../utils/constants';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { isAfter, startOfDay } from 'date-fns';
 
 const ClassForm = ({ initialData, trackId, classes = [], onSave, onClose, onDelete }) => {
   const [formData, setFormData] = useState({
@@ -36,6 +39,13 @@ const ClassForm = ({ initialData, trackId, classes = [], onSave, onClose, onDele
       return;
     }
 
+    if (formData.courseStartDate && formData.courseEndDate) {
+      if (isAfter(startOfDay(new Date(formData.courseStartDate)), startOfDay(new Date(formData.courseEndDate)))) {
+        setError('Course end date must be after or on the start date.');
+        return;
+      }
+    }
+
     if (formData.location !== 'Online') {
       const conflict = classes.find(c => 
         c.id !== formData.id && 
@@ -46,7 +56,10 @@ const ClassForm = ({ initialData, trackId, classes = [], onSave, onClose, onDele
 
       if (conflict) {
         const trackName = TRACKS.find(t => t.id === conflict.trackId)?.label || conflict.trackId;
-        const topicName = conflict.topic?.trim() || 'Class';
+        let topicName = conflict.topic?.trim() || 'Class';
+        if (conflict.trackId === 'individual' && conflict.studentName) {
+          topicName = `Student: ${conflict.studentName}`;
+        }
         const teacherName = conflict.teacher ? ` with ${conflict.teacher}` : '';
         setError(`Room conflict: ${formData.location} is already booked for ${trackName} (${topicName}${teacherName}) from ${conflict.startTime} to ${conflict.endTime}.`);
         return;
@@ -101,9 +114,48 @@ const ClassForm = ({ initialData, trackId, classes = [], onSave, onClose, onDele
             <input type="text" name="topic" value={formData.topic} onChange={handleChange} placeholder="e.g. Intro to React" />
           </div>
           
+          {trackId === 'individual' && (
+            <div className={styles.field}>
+              <label>Student Name</label>
+              <input type="text" name="studentName" value={formData.studentName || ''} onChange={handleChange} placeholder="e.g. John Doe" />
+            </div>
+          )}
+          
           <div className={styles.field}>
             <label>Teacher *</label>
             <input type="text" name="teacher" value={formData.teacher} onChange={handleChange} required placeholder="Teacher Name" />
+          </div>
+          
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label>Course Start Date (optional)</label>
+              <DatePicker
+                selected={formData.courseStartDate ? new Date(formData.courseStartDate) : null}
+                onChange={(date) => setFormData(prev => ({ ...prev, courseStartDate: date ? date.toISOString() : null }))}
+                selectsStart
+                startDate={formData.courseStartDate ? new Date(formData.courseStartDate) : null}
+                endDate={formData.courseEndDate ? new Date(formData.courseEndDate) : null}
+                placeholderText="Start Date"
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
+              />
+            </div>
+            <div className={styles.field}>
+              <label>Course End Date (optional)</label>
+              <DatePicker
+                selected={formData.courseEndDate ? new Date(formData.courseEndDate) : null}
+                onChange={(date) => setFormData(prev => ({ ...prev, courseEndDate: date ? date.toISOString() : null }))}
+                selectsEnd
+                startDate={formData.courseStartDate ? new Date(formData.courseStartDate) : null}
+                endDate={formData.courseEndDate ? new Date(formData.courseEndDate) : null}
+                minDate={formData.courseStartDate ? new Date(formData.courseStartDate) : null}
+                placeholderText="End Date"
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
+              />
+            </div>
           </div>
           
           <div className={styles.field}>
@@ -118,8 +170,8 @@ const ClassForm = ({ initialData, trackId, classes = [], onSave, onClose, onDele
           
           {formData.location === 'Online' && (
             <div className={styles.field}>
-              <label>Meeting Link *</label>
-              <input type="url" name="link" value={formData.link} onChange={handleChange} required placeholder="https://zoom.us/j/..." />
+              <label>Meeting Link (optional)</label>
+              <input type="url" name="link" value={formData.link || ''} onChange={handleChange} placeholder="https://zoom.us/j/..." />
             </div>
           )}
           

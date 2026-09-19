@@ -5,7 +5,7 @@ import Tabs from './components/Tabs';
 import ScheduleGrid from './components/ScheduleGrid';
 import ClassForm from './components/ClassForm';
 import FreeRoomFinder from './components/FreeRoomFinder';
-import { Search } from 'lucide-react';
+import { Search, Plus } from 'lucide-react';
 import './index.scss';
 
 function App() {
@@ -66,10 +66,16 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <h1>EduCenter Schedule</h1>
-          <button className="finder-btn" onClick={() => setIsFinderOpen(true)}>
-            <Search size={18} />
-            <span>Find Free Room</span>
-          </button>
+          <div className="header-actions">
+            <button className="add-btn" onClick={() => { setFormData(null); setIsFormOpen(true); }}>
+              <Plus size={18} />
+              <span>Add Class</span>
+            </button>
+            <button className="finder-btn" onClick={() => setIsFinderOpen(true)}>
+              <Search size={18} />
+              <span>Find Free Room</span>
+            </button>
+          </div>
         </div>
       </header>
 
