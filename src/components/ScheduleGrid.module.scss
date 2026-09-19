@@ -1,0 +1,124 @@
+.gridContainer {
+  overflow-x: auto;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.grid {
+  min-width: 800px;
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  /* Header row is auto/min-content, then exactly 30px per half-hour slot */
+  grid-auto-rows: 30px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.timeHeader {
+  padding: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+  background: #f9fafb;
+  height: max-content;
+}
+
+.dayHeader {
+  padding: 12px;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  height: max-content;
+  
+  &:last-child { border-right: none; }
+}
+
+.timeLabel {
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #f3f4f6; /* Will overlay with cell bottom borders */
+  background: #fff;
+  position: relative;
+  
+  /* Every even hour might have slightly darker border if needed, but we rely on gridCell */
+  
+  span {
+    position: absolute;
+    top: -10px;
+    right: 8px;
+    font-size: 12px;
+    color: #9ca3af;
+    background: #fff;
+    padding: 0 4px;
+    line-height: 1;
+    z-index: 5;
+  }
+}
+
+.gridCell {
+  border-bottom: 1px solid #f3f4f6;
+  border-right: 1px dashed #f3f4f6;
+  cursor: pointer;
+  
+  /* Make every full hour have a slightly more prominent bottom border */
+  &:nth-child(14n) { /* Actually wait, nth-child won't work well here since they're flattened */ }
+  
+  &:hover {
+    background-color: #f9fafb;
+  }
+}
+
+/* We can use an alternating class for the full hour border if needed, but standard f3f4f6 is fine */
+
+.classBlock {
+  /* Absolute positioning within the grid cell? No, grid takes care of rows/cols. */
+  /* We just need to give it margins so it doesn't touch the borders perfectly */
+  margin: 1px 4px 1px 4px;
+  border-left: 4px solid;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: transform 0.1s, box-shadow 0.1s;
+  z-index: 10;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 20;
+  }
+}
+
+.classTime {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 2px;
+}
+
+.classTopic {
+  font-weight: 500;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.classMeta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 11px;
+}
+
+.link {
+  color: #3b82f6;
+  text-decoration: underline;
+}
