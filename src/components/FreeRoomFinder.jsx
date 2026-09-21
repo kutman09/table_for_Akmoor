@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styles from './FreeRoomFinder.module.scss';
-import { DAYS, ROOMS, TRACKS } from '../utils/constants';
+import { DAYS, ROOMS } from '../utils/constants';
 import { generateTimeSlots, checkOverlap } from '../utils/time';
 import { X, Search } from 'lucide-react';
 
-const FreeRoomFinder = ({ classes, onClose }) => {
+const FreeRoomFinder = ({ classes, tracks, onClose }) => {
   const [day, setDay] = useState(DAYS[0]);
   const [startTime, setStartTime] = useState('10:00');
   const [endTime, setEndTime] = useState('11:00');
@@ -37,7 +37,7 @@ const FreeRoomFinder = ({ classes, onClose }) => {
     setResults(roomStatus);
   };
 
-  const getTrackName = (id) => TRACKS.find(t => t.id === id)?.label || id;
+  const getTrackName = (id) => tracks.find(t => t.id === id)?.label || id;
 
   return (
     <div className={styles.overlay}>

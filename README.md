@@ -1,13 +1,13 @@
-# EduCenter Schedule
+# ITadis Schedule
 
-A React application for managing an education center's class schedule across 4 tracks: Python, JavaScript, Flutter, and English.
+A React application for managing an education center's class schedule across dynamic subjects.
 
 ## Features
 
-- **4 Tracks**: Independent schedule grids for each track without page reloads.
+- **Dynamic Subjects**: Manage schedules for multiple subjects/tracks completely independently. Add, rename, or delete subjects via the UI.
 - **Shared Rooms**: 3 physical rooms and an "Online" location shared across all tracks.
-- **Interactive Grid**: Click on empty time slots to create classes, or existing classes to edit them.
-- **Cross-Track Free Room Finder**: Check room availability across all 4 tracks at once to avoid overlaps.
+- **Interactive Grid**: Click on empty time slots to create classes, or existing classes to edit them. Overlapping classes in different rooms layout side-by-side.
+- **Cross-Track Free Room Finder**: Check room availability across all subjects at once to avoid overlaps.
 - **Local Storage**: All data is saved automatically and persists across sessions.
 - **Responsive**: Works on desktop and mobile devices.
 

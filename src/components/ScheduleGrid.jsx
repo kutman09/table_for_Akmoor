@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import styles from './ScheduleGrid.module.scss';
-import { DAYS, START_HOUR, END_HOUR, TRACKS } from '../utils/constants';
+import { DAYS, START_HOUR, END_HOUR } from '../utils/constants';
 import { generateTimeSlots, timeToRow, calculateDurationRows, calculateLayout } from '../utils/time';
 import { differenceInDays, startOfDay } from 'date-fns';
 
-const ScheduleGrid = ({ trackId, classes, onCellClick, onClassClick }) => {
+const ScheduleGrid = ({ trackId, tracks, classes, onCellClick, onClassClick }) => {
   const timeSlots = generateTimeSlots();
   
   // Create an array of full hour labels for the y-axis
@@ -13,7 +13,7 @@ const ScheduleGrid = ({ trackId, classes, onCellClick, onClassClick }) => {
     hourLabels.push(`${h.toString().padStart(2, '0')}:00`);
   }
 
-  const trackConfig = TRACKS.find(t => t.id === trackId);
+  const trackConfig = tracks.find(t => t.id === trackId) || tracks[0];
   const trackClasses = classes.filter(c => c.trackId === trackId);
   
   // Precompute layout per day

@@ -1,4 +1,33 @@
+import { DEFAULT_TRACKS } from './constants';
+
 const STORAGE_KEY = 'edu_center_schedules';
+const TRACKS_KEY = 'itadis_tracks';
+
+export const getTracks = () => {
+  try {
+    const data = localStorage.getItem(TRACKS_KEY);
+    return data ? JSON.parse(data) : DEFAULT_TRACKS;
+  } catch (e) {
+    console.error('Failed to parse tracks', e);
+    return DEFAULT_TRACKS;
+  }
+};
+
+export const saveTracks = (tracks) => {
+  localStorage.setItem(TRACKS_KEY, JSON.stringify(tracks));
+};
+
+export const deleteTrackCascade = (trackId) => {
+  const tracks = getTracks();
+  const newTracks = tracks.filter(t => t.id !== trackId);
+  saveTracks(newTracks);
+  
+  const classes = getClasses();
+  const newClasses = classes.filter(c => c.trackId !== trackId);
+  saveClasses(newClasses);
+  
+  return { newTracks, newClasses };
+};
 
 export const getClasses = () => {
   try {

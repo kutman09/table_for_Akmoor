@@ -1,4 +1,4 @@
-export const TRACKS = [
+export const DEFAULT_TRACKS = [
   { id: 'python', label: 'Python', color: '#3b82f6', bgColor: '#eff6ff' },
   { id: 'javascript', label: 'JavaScript', color: '#eab308', bgColor: '#fefce8' },
   { id: 'flutter', label: 'Flutter', color: '#06b6d4', bgColor: '#ecfeff' },

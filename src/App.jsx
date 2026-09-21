@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TRACKS } from './utils/constants';
-import { getClasses, addClass, updateClass, deleteClass } from './utils/storage';
+import { getClasses, addClass, updateClass, deleteClass, getTracks, saveTracks, deleteTrackCascade } from './utils/storage';
 import Tabs from './components/Tabs';
 import ScheduleGrid from './components/ScheduleGrid';
 import ClassForm from './components/ClassForm';
@@ -9,7 +8,8 @@ import { Search, Plus } from 'lucide-react';
 import './index.scss';
 
 function App() {
-  const [activeTrack, setActiveTrack] = useState(TRACKS[0].id);
+  const [tracks, setTracks] = useState([]);
+  const [activeTrack, setActiveTrack] = useState('');
   const [classes, setClasses] = useState([]);
   
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -18,8 +18,27 @@ function App() {
   const [isFinderOpen, setIsFinderOpen] = useState(false);
 
   useEffect(() => {
+    const t = getTracks();
+    setTracks(t);
+    if (t.length > 0) setActiveTrack(t[0].id);
     setClasses(getClasses());
   }, []);
+
+  const handleUpdateTracks = (newTracks) => {
+    setTracks(newTracks);
+    saveTracks(newTracks);
+  };
+
+  const handleDeleteTrack = (id) => {
+    if (confirm('Are you sure you want to delete this subject? All classes in this subject will be lost.')) {
+      const { newTracks, newClasses } = deleteTrackCascade(id);
+      setTracks(newTracks);
+      setClasses(newClasses);
+      if (activeTrack === id) {
+        setActiveTrack(newTracks.length > 0 ? newTracks[0].id : '');
+      }
+    }
+  };
 
   const handleCellClick = (day, time) => {
     setFormData({ day, startTime: time, endTime: calculateNextSlot(time) });
@@ -65,7 +84,7 @@ function App() {
     <div className="app-container">
       <header className="app-header">
         <div className="header-content">
-          <h1>EduCenter Schedule</h1>
+          <h1>ITadis Schedule</h1>
           <div className="header-actions">
             <button className="add-btn" onClick={() => { setFormData(null); setIsFormOpen(true); }}>
               <Plus size={18} />
@@ -80,22 +99,32 @@ function App() {
       </header>
 
       <main className="app-main">
-        <Tabs activeTrack={activeTrack} setActiveTrack={setActiveTrack} />
+        <Tabs 
+          tracks={tracks}
+          activeTrack={activeTrack} 
+          setActiveTrack={setActiveTrack} 
+          onUpdateTracks={handleUpdateTracks}
+          onDeleteTrack={handleDeleteTrack}
+        />
         
-        <div className="schedule-wrapper">
-          <ScheduleGrid 
-            trackId={activeTrack} 
-            classes={classes}
-            onCellClick={handleCellClick}
-            onClassClick={handleClassClick}
-          />
-        </div>
+        {activeTrack && (
+          <div className="schedule-wrapper">
+            <ScheduleGrid 
+              trackId={activeTrack}
+              tracks={tracks}
+              classes={classes}
+              onCellClick={handleCellClick}
+              onClassClick={handleClassClick}
+            />
+          </div>
+        )}
       </main>
 
       {isFormOpen && (
         <ClassForm 
           initialData={formData}
           trackId={activeTrack}
+          tracks={tracks}
           classes={classes}
           onSave={handleSaveClass}
           onClose={() => setIsFormOpen(false)}
@@ -106,6 +135,7 @@ function App() {
       {isFinderOpen && (
         <FreeRoomFinder 
           classes={classes}
+          tracks={tracks}
           onClose={() => setIsFinderOpen(false)}
         />
       )}

@@ -4,9 +4,12 @@
   margin-bottom: 24px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  align-items: flex-end;
 }
 
 .tab {
+  display: flex;
+  align-items: center;
   padding: 12px 24px;
   font-size: 16px;
   font-weight: 500;
@@ -26,5 +29,52 @@
 
   &.active {
     font-weight: 600;
+  }
+}
+
+.tabLabel {
+  margin-right: 8px;
+}
+
+.tabActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: currentColor;
+    opacity: 0.6;
+    display: flex;
+    padding: 2px;
+    border-radius: 4px;
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(0,0,0,0.05);
+    }
+  }
+}
+
+.addTabBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  color: #6b7280;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  margin-bottom: -2px;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+
+  &:hover {
+    color: #111827;
+    background-color: #f9fafb;
   }
 }

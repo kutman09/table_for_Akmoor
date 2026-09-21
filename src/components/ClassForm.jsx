@@ -5,12 +5,11 @@ import { X } from 'lucide-react';
 import { generateTimeSlots } from '../utils/time';
 
 import { checkOverlap } from '../utils/time';
-import { TRACKS } from '../utils/constants';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { isAfter, startOfDay } from 'date-fns';
 
-const ClassForm = ({ initialData, trackId, classes = [], onSave, onClose, onDelete }) => {
+const ClassForm = ({ initialData, trackId, tracks, classes = [], onSave, onClose, onDelete }) => {
   const [formData, setFormData] = useState({
     day: DAYS[0],
     startTime: '09:00',
@@ -55,7 +54,7 @@ const ClassForm = ({ initialData, trackId, classes = [], onSave, onClose, onDele
       );
 
       if (conflict) {
-        const trackName = TRACKS.find(t => t.id === conflict.trackId)?.label || conflict.trackId;
+        const trackName = tracks.find(t => t.id === conflict.trackId)?.label || conflict.trackId;
         let topicName = conflict.topic?.trim() || 'Class';
         if (conflict.trackId === 'individual' && conflict.studentName) {
           topicName = `Student: ${conflict.studentName}`;
